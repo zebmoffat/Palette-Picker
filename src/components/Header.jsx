@@ -1,3 +1,5 @@
+import ColorSquare from "./ColorSquare";
+
 function Header({ fiveColors }) {
   let color1 = {
     backgroundColor: `${fiveColors[1]}`,
@@ -29,15 +31,11 @@ function Header({ fiveColors }) {
       <h2 style = {headerStyle}>Generate a color palette</h2>
 
       <div className="colorRow">
-        <div className="color" style={color1} />
-
-        <div className="color" style={color2} />
-
-        <div className="color" style={color3} />
-
-        <div className="color" style={color4} />
-
-        <div className="color" style={color5} />
+      <ColorSquare givenColor={color1} />
+      <ColorSquare givenColor={color2} />
+      <ColorSquare givenColor={color3} />
+      <ColorSquare givenColor={color4} />
+      <ColorSquare givenColor={color5} />
       </div>
     </header>
   );
