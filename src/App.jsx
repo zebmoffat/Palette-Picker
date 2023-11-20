@@ -81,8 +81,6 @@ function App() {
       })
       .then((data) => {
         let colors = data.colors.map((color) => color.rgb.value);
-        
-        console.log(colors);
 
         colors.reverse();
 
@@ -95,8 +93,6 @@ function App() {
           4: colors[3],
           5: colors[4],
         });
-
-        console.log(colors);
       })
       .catch((error) => console.error("Error fetching color scheme:", error));
   }
