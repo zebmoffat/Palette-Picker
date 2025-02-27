@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ReactSketchCanvas } from "react-sketch-canvas";
 
 const Canvas = ({ fiveColors }) => {
   const colorArray = Object.values(fiveColors);
-
   const [currentColor, setCurrentColor] = useState(colorArray[0]);
+  const [canvasKey, setCanvasKey] = useState(0); // Key to trigger re-render
+
+  useEffect(() => {
+    setCurrentColor(colorArray[0]); // Update color on change
+    setCanvasKey((prevKey) => prevKey + 1); // Force canvas reload
+  }, [fiveColors]);
 
   const handleColorChange = (color) => {
     setCurrentColor(color);
@@ -23,10 +28,10 @@ const Canvas = ({ fiveColors }) => {
           <div
             key={index}
             style={{
-              backgroundColor: `${color}`,
+              backgroundColor: color,
               width: "2rem",
               height: "2rem",
-              border: "1px solid #ccc",
+              border: currentColor === color ? "2px solid #fff" : "1px solid #fff", // Increase border for selected color
               display: "inline-block",
               cursor: "pointer",
               marginRight: "0.3rem",
@@ -38,7 +43,8 @@ const Canvas = ({ fiveColors }) => {
       <div className="canvasArea">
         <div width="3rem">
           <ReactSketchCanvas
-            strokeColor={`${currentColor}`}
+            key={canvasKey} // Forces re-render when fiveColors changes
+            strokeColor={currentColor}
             strokeWidth={20}
             width="95%"
             display="flex"
