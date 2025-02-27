@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./index.css";
 
 import Header from "./components/Header.jsx";
@@ -17,16 +17,42 @@ function App() {
       5: JSON.parse(localStorage.getItem("currentColor"))[4],
     }
   );
-  const [paletteType, setPaletteType] = useState(checkForSelectedPalette() || localStorage.getItem("selectedPalette"));
+  const [paletteType, setPaletteType] = useState(
+    checkForSelectedPalette() || localStorage.getItem("selectedPalette")
+  );
+
+  const [direction, setDirection] = useState("bottom");
+
+  useEffect(() => {
+    const directions = [
+      "top",
+      "bottom",
+      "left",
+      "right",
+      "top left",
+      "top right",
+      "bottom left",
+      "bottom right",
+    ];
+    const newDirection =
+      directions[Math.floor(Math.random() * directions.length)];
+    console.log(newDirection);
+    setDirection(newDirection);
+  }, [fiveColors]);
 
   return (
     <main
       style={{
-        backgroundImage: `linear-gradient(to bottom, ${fiveColors[5]}, ${fiveColors[3]})`,
+        backgroundImage: `linear-gradient(to ${direction}, ${fiveColors[5]}, ${fiveColors[3]})`,
       }}
     >
       <Header fiveColors={fiveColors} />
-      <Button request={request} fiveColors={fiveColors} paletteType={paletteType} setPaletteType={setPaletteType} />
+      <Button
+        request={request}
+        fiveColors={fiveColors}
+        paletteType={paletteType}
+        setPaletteType={setPaletteType}
+      />
 
       <div className="sectionParent">
         <section>
@@ -115,11 +141,11 @@ function App() {
       localStorage.setItem(
         "currentColor",
         JSON.stringify([
-          "rgb(216, 212, 183)",
-          "rgb(185, 17, 17)",
-          "rgb(70, 128, 95)",
-          "rgb(83, 88, 69)",
-          "rgb(12, 18, 16)",
+          "rgb(189, 230, 248)",
+          "rgb(144, 212, 242)",
+          "rgb(99, 194, 236)",
+          "rgb(55, 176, 229)",
+          "rgb(28, 151, 204)",
         ])
       );
       return null;
@@ -129,9 +155,9 @@ function App() {
 
 function checkForSelectedPalette() {
   if (!localStorage.getItem("selectedPalette")) {
-    localStorage.setItem("selectedPalette", "monochrome")
+    localStorage.setItem("selectedPalette", "monochrome");
     return null;
-  }; 
+  }
 }
 
 export default App;
