@@ -1,53 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { SketchPicker } from "react-color";
 
-class ColorPicker extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+const ColorPicker = ({ palette, request }) => {
+  const [background, setBackground] = useState("rgb(0, 0, 0)");
 
-  state = {
-    background: "rgb",
-    backgroundColor: "#141414",
+  const handleChangeComplete = (color) => {
+    setBackground(color.rgb);
   };
 
-  handleChangeComplete = (color) => {
-    this.setState({ background: color.rgb });
+  const parseRgb = (rgb) => {
+    return [rgb.r, rgb.g, rgb.b];
   };
 
-  parseRgb = (rgb) => {
-    let rgbArr = [rgb.r, rgb.g, rgb.b];
-    return rgbArr;
+  const buttonStyle = {
+    backgroundColor: `${palette[0]}`,
+    border: `2px solid ${palette[palette.length - 1]}`,
+    color: `${palette[palette.length - 1]}`,
   };
 
-  render() {
-    let buttonStyle = {
-      backgroundColor: `${this.props.fiveColors[1]}`,
-      border: `2px solid ${this.props.fiveColors[5]}`,
-      color: `${this.props.fiveColors[5]}`,
-    };
-
-    return (
-      <>
-        <div className="sketch">
-          <SketchPicker
-            color={this.state.background}
-            onChangeComplete={this.handleChangeComplete}
-          />
-        </div>
-        <div className="centerParent">
-          <button
-            onClick={() =>
-              this.props.request(this.parseRgb(this.state.background))
-            }
-            style={buttonStyle}
-          >
-            Palette from Color
-          </button>
-        </div>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <div className="sketch">
+        <SketchPicker
+          color={background}
+          onChangeComplete={handleChangeComplete}
+        />
+      </div>
+      <div className="centerParent">
+        <button
+          onClick={() => request(parseRgb(background))}
+          style={buttonStyle}
+        >
+          Palette from Color
+        </button>
+      </div>
+    </>
+  );
+};
 
 export default ColorPicker;

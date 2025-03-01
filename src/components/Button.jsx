@@ -1,20 +1,20 @@
 import arrows from "../img/arrows.svg";
 
-function Button({ request, fiveColors, paletteType, setPaletteType }) {
+function Button({ request, palette, paletteType, setPaletteType }) {
   let buttonStyle = {
-    backgroundColor: `${fiveColors[1]}`,
-    border: `2px solid ${fiveColors[5]}`,
-    color: `${fiveColors[5]}`,
+    backgroundColor: `${palette[0]}`,
+    border: `2px solid ${palette[palette.length - 1]}`,
+    color: `${palette[palette.length - 1]}`,
   };
 
   let pStyle = {
-    color: `${fiveColors[1]}`,
+    color: `${palette[0]}`,
   };
 
   let selectStyle = {
-    color: `${fiveColors[5]}`,
-    backgroundColor: `${fiveColors[1]}`,
-    border: `2px solid ${fiveColors[5]}`,
+    color: `${palette[palette.length - 1]}`,
+    backgroundColor: `${palette[0]}`,
+    border: `2px solid ${palette[palette.length - 1]}`,
     width: '13.5rem'
   }
 

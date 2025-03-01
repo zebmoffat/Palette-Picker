@@ -1,18 +1,18 @@
 import { useState } from "react";
 
-function List({ fiveColors, setFiveColors }) {
+function List({ palette, setPalette }) {
   const [favoritesList, setFavoritesList] = useState(
     JSON.parse(localStorage.getItem("colorOptions")) || []
   );
 
   let textColor2 = {
-    color: `${fiveColors[5]}`,
+    color: `${palette[5]}`,
   };
 
   let buttonStyle = {
-    backgroundColor: `${fiveColors[1]}`,
-    border: `2px solid ${fiveColors[5]}`,
-    color: `${fiveColors[5]}`,
+    backgroundColor: `${palette[1]}`,
+    border: `2px solid ${palette[5]}`,
+    color: `${palette[5]}`,
   };
 
   function addToFavorites(colors, name) {
@@ -48,7 +48,7 @@ function List({ fiveColors, setFiveColors }) {
             value={object.colors}
             key={index}
             onClick={() => {
-              setFiveColors(object.colors);
+              setPalette(object.colors);
               localStorage.setItem(
                 "currentColor",
                 JSON.stringify([
@@ -71,7 +71,7 @@ function List({ fiveColors, setFiveColors }) {
             style={buttonStyle}
             onClick={() =>
               addToFavorites(
-                fiveColors,
+                palette,
                 document.getElementById("favoriteName").value
               )
             }

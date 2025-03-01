@@ -8,17 +8,12 @@ import List from "./components/List.jsx";
 import Canvas from "./components/Canvas.jsx";
 
 function App() {
-  const [fiveColors, setFiveColors] = useState(
-    startUpColors() || {
-      1: JSON.parse(localStorage.getItem("currentColor"))[0],
-      2: JSON.parse(localStorage.getItem("currentColor"))[1],
-      3: JSON.parse(localStorage.getItem("currentColor"))[2],
-      4: JSON.parse(localStorage.getItem("currentColor"))[3],
-      5: JSON.parse(localStorage.getItem("currentColor"))[4],
-    }
+  const [palette, setPalette] = useState(
+    startUpColors() || JSON.parse(localStorage.getItem("palette"))
   );
+
   const [paletteType, setPaletteType] = useState(
-    checkForSelectedPalette() || localStorage.getItem("selectedPalette")
+    checkForSelectedPalette() || localStorage.getItem("paletteType")
   );
 
   const [direction, setDirection] = useState("bottom");
@@ -36,35 +31,36 @@ function App() {
     ];
     const newDirection =
       directions[Math.floor(Math.random() * directions.length)];
-    console.log(newDirection);
     setDirection(newDirection);
-  }, [fiveColors]);
+  }, [palette]);
 
   return (
     <main
       style={{
-        backgroundImage: `linear-gradient(to ${direction}, ${fiveColors[5]}, ${fiveColors[3]})`,
+        backgroundImage: `linear-gradient(to ${direction}, ${
+          palette[palette.length - 1]
+        }, ${palette[Math.floor(palette.length / 2)]})`,
       }}
     >
-      <Header fiveColors={fiveColors} />
+      <Header palette={palette} />
       <Button
         request={request}
-        fiveColors={fiveColors}
+        palette={palette}
         paletteType={paletteType}
         setPaletteType={setPaletteType}
       />
 
       <div className="sectionParent">
         <section>
-          <Canvas fiveColors={fiveColors} />
+          <Canvas palette={palette} />
         </section>
 
         <section>
-          <ColorPicker request={request} fiveColors={fiveColors} />
+          <ColorPicker request={request} palette={palette} />
         </section>
 
         <section>
-          <List fiveColors={fiveColors} setFiveColors={setFiveColors} />
+          <List palette={palette} setPalette={setPalette} />
         </section>
       </div>
       <p></p>
@@ -110,17 +106,11 @@ function App() {
 
         colors.reverse();
 
-        localStorage.setItem("currentColor", JSON.stringify(colors));
+        localStorage.setItem("palette", JSON.stringify(colors));
 
-        setFiveColors({
-          1: colors[0],
-          2: colors[1],
-          3: colors[2],
-          4: colors[3],
-          5: colors[4],
-        });
+        setPalette(colors);
       })
-      .catch((error) => console.error("Error fetching color scheme:", error));
+      .catch((error) => console.error("Error fetching palette:", error));
   }
 
   function getRandomRGBValue() {
@@ -135,15 +125,15 @@ function App() {
   }
 
   function startUpColors() {
-    if (!localStorage.getItem("currentColor")) {
+    if (!localStorage.getItem("palette")) {
       localStorage.setItem(
-        "currentColor",
+        "palette",
         JSON.stringify([
-          "rgb(189, 230, 248)",
-          "rgb(144, 212, 242)",
-          "rgb(99, 194, 236)",
-          "rgb(55, 176, 229)",
-          "rgb(28, 151, 204)",
+          "#bde6f8",
+          "#90d5f2",
+          "#63c3ec",
+          "#37b0e5",
+          "#1c97cc",
         ])
       );
     }
@@ -152,8 +142,8 @@ function App() {
 }
 
 function checkForSelectedPalette() {
-  if (!localStorage.getItem("selectedPalette")) {
-    localStorage.setItem("selectedPalette", "monochrome");
+  if (!localStorage.getItem("paletteType")) {
+    localStorage.setItem("paletteType", "monochrome");
     return null;
   }
 }
