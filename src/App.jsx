@@ -135,9 +135,7 @@ function App() {
   }
 
   function startUpColors() {
-    if (localStorage.getItem("currentColor")) {
-      return null;
-    } else {
+    if (!localStorage.getItem("currentColor")) {
       localStorage.setItem(
         "currentColor",
         JSON.stringify([
@@ -148,8 +146,8 @@ function App() {
           "rgb(28, 151, 204)",
         ])
       );
-      return null;
     }
+    return null;
   }
 }
 
