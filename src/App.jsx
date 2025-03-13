@@ -6,6 +6,10 @@ import Button from "./components/Button.jsx";
 import ColorPicker from "./components/ColorPicker.jsx";
 import List from "./components/List.jsx";
 import Canvas from "./components/Canvas.jsx";
+import GlobalPalettes from "./components/GlobalPalettes.jsx";
+import { getGlobalPalettes } from "./requests.jsx";
+
+const API_URL = "http://54.177.154.115:8080/api/";
 
 function App() {
   const [palette, setPalette] = useState(
@@ -15,6 +19,10 @@ function App() {
   const [paletteType, setPaletteType] = useState(
     checkForSelectedPalette() || localStorage.getItem("paletteType")
   );
+
+  const [amount, setAmount] = useState("4");
+
+  const [globalPalettes, setGlobalPalettes] = useState([]);
 
   const [direction, setDirection] = useState("bottom");
 
@@ -34,6 +42,10 @@ function App() {
     setDirection(newDirection);
   }, [palette]);
 
+  useEffect(() => {
+    getGlobalPalettes(setGlobalPalettes);
+  }, []);
+
   return (
     <main
       style={{
@@ -43,36 +55,77 @@ function App() {
       }}
     >
       <Header palette={palette} />
+
       <Button
-        request={request}
+        request={localPalette}
         palette={palette}
         paletteType={paletteType}
         setPaletteType={setPaletteType}
+        amount={amount}
+        setAmount={setAmount}
       />
 
       <div className="sectionParent">
-        <section>
+        <section style={{ width: "40%" }}>
           <Canvas palette={palette} />
         </section>
 
-        <section>
-          <ColorPicker request={request} palette={palette} />
+        <section style={{ width: "20%" }}>
+          <ColorPicker
+            request={localPalette}
+            palette={palette}
+            paletteType={paletteType}
+          />
         </section>
 
-        <section>
-          <List palette={palette} setPalette={setPalette} />
+        <section
+          style={{ width: "40%", display: "flex", flexDirection: "row" }}
+        >
+          <GlobalPalettes
+            palette={palette}
+            globalPalettes={globalPalettes}
+            getGlobalPalettes={getGlobalPalettes}
+            setGlobalPalettes={setGlobalPalettes}
+            setPalette={setPalette}
+          />
         </section>
       </div>
       <p></p>
     </main>
   );
 
-  function request(givenColor) {
+  function localPalette(givenColor) {
+    fetch(
+      API_URL +
+        `palette?type=${paletteType}${
+          givenColor ? "&color=" + givenColor : ""
+        }&size=${amount}`
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return response.json(); // Return the JSON promise
+      })
+      .then((data) => {
+        console.log(data); // Now `data` is the parsed JSON
+
+        localStorage.setItem("palette", JSON.stringify(data));
+
+        setPalette(data);
+      })
+      .catch((error) => console.log("Error fetching palette:", error));
+
+    return;
+  }
+
+  function requestPalette(givenColor) {
     const seedRGBColor = givenColor
       ? `rgb(${givenColor[0]},${givenColor[1]},${givenColor[2]})`
       : generateRandomRGBColor();
 
-    const url = `https://www.thecolorapi.com/scheme?rgb=${seedRGBColor}&mode=${paletteType}&count=5`;
+    const url = `https://www.thecolorapi.com/scheme?rgb=${seedRGBColor}&mode=${paletteType}&count=12`;
 
     /*
     different themes for mode in url
@@ -110,7 +163,7 @@ function App() {
 
         setPalette(colors);
       })
-      .catch((error) => console.error("Error fetching palette:", error));
+      .catch((error) => console.log("Error fetching palette:", error));
   }
 
   function getRandomRGBValue() {
@@ -128,13 +181,7 @@ function App() {
     if (!localStorage.getItem("palette")) {
       localStorage.setItem(
         "palette",
-        JSON.stringify([
-          "#bde6f8",
-          "#90d5f2",
-          "#63c3ec",
-          "#37b0e5",
-          "#1c97cc",
-        ])
+        JSON.stringify(["#bde6f8", "#90d5f2", "#63c3ec", "#37b0e5", "#1c97cc"])
       );
     }
     return null;

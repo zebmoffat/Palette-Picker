@@ -6,7 +6,8 @@ function Header({ palette }) {
       <h1 style={{ color: palette[0] }} className="rotate">
         Palette Picker
       </h1>
-      <h2 style={{ color: palette[0] }}>Generate a color palette</h2>
+
+      <h2 style={{ color: palette[0] }}>Generate color palettes</h2>
 
       <div className="colorRow">
         {palette.map((color, index) => (

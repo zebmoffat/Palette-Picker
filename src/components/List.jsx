@@ -6,13 +6,13 @@ function List({ palette, setPalette }) {
   );
 
   let textColor2 = {
-    color: `${palette[5]}`,
+    color: `${palette[palette.length - 1]}`,
   };
 
   let buttonStyle = {
-    backgroundColor: `${palette[1]}`,
-    border: `2px solid ${palette[5]}`,
-    color: `${palette[5]}`,
+    backgroundColor: `${palette[0]}`,
+    border: `2px solid ${palette[palette.length - 1]}`,
+    color: `${palette[palette.length - 1]}`,
   };
 
   function addToFavorites(colors, name) {
@@ -40,7 +40,7 @@ function List({ palette, setPalette }) {
   }
 
   return (
-    <>
+    <div style={{backgroundColor: "afafaf", width: "100%", height: "100%"}}>
       <p style={textColor2}>Favorites</p>
       <select name="favorites" id="favorites" multiple>
         {favoritesList.map((object, index) => (
@@ -96,7 +96,7 @@ function List({ palette, setPalette }) {
           Remove from favorites
         </button>
       </div>
-    </>
+    </div>
   );
 }
 

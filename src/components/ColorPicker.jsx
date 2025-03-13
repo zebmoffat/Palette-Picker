@@ -1,21 +1,18 @@
 import React, { useState } from "react";
 import { SketchPicker } from "react-color";
 
-const ColorPicker = ({ palette, request }) => {
-  const [background, setBackground] = useState("rgb(0, 0, 0)");
+const ColorPicker = ({ palette, paletteType, request }) => {
+  const [background, setBackground] = useState("#000000");
 
   const handleChangeComplete = (color) => {
-    setBackground(color.rgb);
-  };
-
-  const parseRgb = (rgb) => {
-    return [rgb.r, rgb.g, rgb.b];
+    setBackground(color.hex);
   };
 
   const buttonStyle = {
     backgroundColor: `${palette[0]}`,
     border: `2px solid ${palette[palette.length - 1]}`,
     color: `${palette[palette.length - 1]}`,
+    marginTop: "5px"
   };
 
   return (
@@ -26,13 +23,18 @@ const ColorPicker = ({ palette, request }) => {
           onChangeComplete={handleChangeComplete}
         />
       </div>
+
       <div className="centerParent">
-        <button
-          onClick={() => request(parseRgb(background))}
-          style={buttonStyle}
-        >
-          Palette from Color
-        </button>
+        {paletteType !== "cool" &&
+          paletteType !== "neutral" &&
+          paletteType !== "warm" && (
+            <button
+              onClick={() => request(background.replace("#", "%23"))}
+              style={buttonStyle}
+            >
+              Palette from Color
+            </button>
+          )}
       </div>
     </>
   );
