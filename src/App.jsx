@@ -9,7 +9,9 @@ import Canvas from "./components/Canvas.jsx";
 import GlobalPalettes from "./components/GlobalPalettes.jsx";
 import { getGlobalPalettes } from "./requests.jsx";
 
-const API_URL = "https://54.177.154.115:8080/api/";
+const API_URL = "https://server.zebmoffat.com/api/";
+
+//http://server.zebmoffat.com:8080/api/
 
 function App() {
   const [palette, setPalette] = useState(

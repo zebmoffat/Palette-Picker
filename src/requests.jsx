@@ -1,4 +1,4 @@
-const API_URL = "https://54.177.154.115:8080/api/";
+const API_URL = "https://server.zebmoffat.com/api/";
 
 export function postPalette(palette, getGlobalPalettes, setGlobalPalettes) {
   fetch(API_URL, {
