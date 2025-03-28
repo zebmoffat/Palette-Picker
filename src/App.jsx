@@ -9,7 +9,7 @@ import Canvas from "./components/Canvas.jsx";
 import GlobalPalettes from "./components/GlobalPalettes.jsx";
 import { getGlobalPalettes } from "./requests.jsx";
 
-const API_URL = "https://server.zebmoffat.com/api/";
+const API_URL = "https://palette-server-133568887555.us-central1.run.app/api/";
 
 //http://server.zebmoffat.com:8080/api/
 

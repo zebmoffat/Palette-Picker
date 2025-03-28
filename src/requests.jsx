@@ -1,4 +1,4 @@
-const API_URL = "https://server.zebmoffat.com/api/";
+const API_URL = "https://palette-server-133568887555.us-central1.run.app/api/";
 
 export function postPalette(palette, getGlobalPalettes, setGlobalPalettes) {
   fetch(API_URL, {
